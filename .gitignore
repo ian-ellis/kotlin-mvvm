@@ -1,0 +1,30 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+
+/build
+/captures
+
+# osx noise
+.DS_Store
+profile
+
+# Android
+.gradle
+gen
+bin
+doc
+proguard
+local.properties
+*.iml
+.idea
+build/
+
+# Code quality
+lint-results.xml
+pmd.xml
+
+# Eclipse
+.metadata
+.settings
