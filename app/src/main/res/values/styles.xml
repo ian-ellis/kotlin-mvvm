@@ -1,8 +1,20 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/outware.blue</item>
+    <item name="colorAccent">@color/outware.lightblue</item>
+    
+    <item name="android:windowTranslucentNavigation">false</item>
+    <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
+  </style>
+
+  <color name="outware.blue">#167bba</color>
+  <color name="outware.lightblue">#B5F8FF</color>
+  <color name="outware.divider.grey">#D1D1D1</color>
+
+
+
 
 </resources>
