@@ -1,11 +1,11 @@
-package ian_ellis.presentation
+package ian_ellis.kotlinmvvm.presentation
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
-import ian_ellis.androidmvvm.R
+import ian_ellis.kotlinmvvm.R
 import kotlin.properties.Delegates
 
 

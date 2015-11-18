@@ -1,26 +1,23 @@
-package ian_ellis.androidmvvm.data.store
-
+package ian_ellis.kotlinmvvm.data.store
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import ian_ellis.androidmvvm.data.vo.ToDo
+import ian_ellis.kotlinmvvm.data.vo.ToDo
 import rx.Observable
 import rx.schedulers.Schedulers
 import java.util.*
 
+public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, "ToDoDB", null, 1) {
 
-val DB_NAME = "ToDoDB"
-val VERSION = 1
-val TABLE_NAME = "todos"
-val KEY_ID = "id"
-val KEY_NAME = "name"
-val KEY_DESCRIPTION = "description"
-val KEY_DONE = "done"
-val COLUMNS = arrayOf(KEY_ID, KEY_NAME, KEY_DESCRIPTION, KEY_DONE);
-
-public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, VERSION) {
+  val TABLE_NAME = "todos"
+  val KEY_ID = "id"
+  val KEY_NAME = "name"
+  val KEY_DESCRIPTION = "description"
+  val KEY_DONE = "done"
+  val COLUMNS = arrayOf(KEY_ID, KEY_NAME, KEY_DESCRIPTION, KEY_DONE);
 
   override fun onCreate(db: SQLiteDatabase) {
     val CREATE_TABLE = """CREATE TABLE $TABLE_NAME
@@ -41,7 +38,7 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
   }
 
   public fun add(toDo: ToDo): Observable<ToDo> {
-    return doAsych {
+    return doAsync {
       val db = this.writableDatabase
       val values = getContentValues(toDo)
       val id = db.insert(TABLE_NAME, null, values)
@@ -52,7 +49,7 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
   }
 
   public fun delete(id: Long): Observable<Unit> {
-    return doAsych {
+    return doAsync {
       val db = this.writableDatabase
       db.delete(TABLE_NAME, "$KEY_ID  = ?", arrayOf(id.toString()))
       db.close();
@@ -61,7 +58,7 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
   }
 
   public fun markAsDone(id: Long, done: Boolean): Observable<Unit> {
-    return doAsych {
+    return doAsync {
       val db = this.writableDatabase;
       val values = ContentValues()
       values.put(KEY_DONE, if (done) {
@@ -76,7 +73,7 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
   }
 
   public fun update(toDo: ToDo): Observable<ToDo> {
-    return doAsych {
+    return doAsync {
       val db = this.writableDatabase;
       val values = getContentValues(toDo)
       db.update(TABLE_NAME, values, "$KEY_ID = ?", arrayOf(toDo.id.toString()))
@@ -85,9 +82,21 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
     }
   }
 
+  public fun update(id:Long, name:String, description:String): Observable<Unit> {
+    return doAsync {
+      val db = this.writableDatabase;
+      val values = ContentValues()
+      values.put(KEY_NAME, name)
+      values.put(KEY_DESCRIPTION, description)
+      db.update(TABLE_NAME, values, "$KEY_ID = ?", arrayOf(id.toString()))
+      db.close();
+      Unit
+    }
+  }
+
 
   public fun getAll(): Observable<List<ToDo>> {
-    return doAsych {
+    return doAsync {
       val toDos = LinkedList<ToDo>();
       val query = "SELECT  * FROM $TABLE_NAME"
       val db = this.writableDatabase;
@@ -96,16 +105,7 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
       if (cursor.moveToFirst()) {
 
         do {
-          toDos.add(ToDo(
-            cursor.getString(1),
-            cursor.getString(2),
-            if (cursor.getInt(3) == 1) {
-              true
-            } else {
-              false
-            },
-            cursor.getLong(0)
-          ))
+          toDos.add(createToDo(cursor))
         } while (cursor.moveToNext())
       }
       toDos
@@ -113,34 +113,29 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
   }
 
 
-  public fun getToDo(id: Long): ToDo {
-    val db = this.readableDatabase
+  public fun getToDo(id: Long): Observable<ToDo> {
+    return doAsync {
+      val db = this.readableDatabase
 
-    val cursor = db.query(TABLE_NAME,
-      COLUMNS, // column names
-      " id = ?", // selections
-      arrayOf(id.toString()), // selections args
-      null, // group by
-      null, // having
-      null, // order by
-      null); // limit
+      val cursor = db.query(TABLE_NAME,
+        COLUMNS, // column names
+        " id = ?", // selections
+        arrayOf(id.toString()), // selections args
+        null, // group by
+        null, // having
+        null, // order by
+        null
+      ); // limit
 
-    cursor?.moveToFirst();
+      cursor?.moveToFirst();
 
-    val toDo = ToDo(
-      cursor.getString(0),
-      cursor.getString(1),
-      if (cursor.getInt(2) == 1) {
-        true
-      } else {
-        false
-      }
-    );
-
-    return toDo;
+      createToDo(cursor);
+    }
   }
 
-  protected fun <T> doAsych(action: () -> T): Observable<T> {
+
+
+  protected fun <T> doAsync(action: () -> T): Observable<T> {
     return Observable.create<T>() { subscriber ->
       try {
         val result = action.invoke()
@@ -151,6 +146,19 @@ public class ToDoSQLHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
       }
 
     }.subscribeOn(Schedulers.io())
+  }
+
+  protected fun createToDo(cursor:Cursor):ToDo{
+    return ToDo(
+      cursor.getString(1),
+      cursor.getString(2),
+      if (cursor.getInt(3) == 1) {
+        true
+      } else {
+        false
+      },
+      cursor.getLong(0)
+    )
   }
 
 

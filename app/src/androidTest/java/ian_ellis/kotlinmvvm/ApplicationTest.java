@@ -1,4 +1,4 @@
-package ian_ellis.androidmvvm;
+package ian_ellis.kotlinmvvm;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

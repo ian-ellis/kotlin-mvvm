@@ -1,4 +1,4 @@
-package ian_ellis.androidmvvm.data.vo
+package ian_ellis.kotlinmvvm.data.vo
 
 /**
  * Created by ianellis on 24/07/15.

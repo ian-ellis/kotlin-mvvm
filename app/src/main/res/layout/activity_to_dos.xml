@@ -3,7 +3,9 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/coordinator"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:background="@color/background_color"
+  >
 
   <android.support.design.widget.AppBarLayout
     android:id="@+id/appbar"
@@ -14,34 +16,30 @@
       android:id="@+id/collapsing_toolbar"
       android:layout_width="match_parent"
       android:layout_height="192dp"
-      android:minHeight="?attr/actionBarSize"
-      app:contentScrim="?attr/colorPrimary"
+      android:minHeight="?android:actionBarSize"
       app:expandedTitleMarginStart="8dp"
-      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      android:theme="@style/Theme.AppCompat"
       app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
       <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:contentInsetStart="8dp"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="?android:actionBarSize"
+        android:theme="@android:style/Theme.Material.Light.DarkActionBar"
         app:layout_collapseMode="pin"/>
 
     </android.support.design.widget.CollapsingToolbarLayout>
 
-
-
   </android.support.design.widget.AppBarLayout>
-
-
-
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_to_dos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="56dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#ffffff"/>
+    android:background="@color/background_color"/>
 
   <RelativeLayout
     android:id="@+id/appbar_suplement"
@@ -54,9 +52,10 @@
       android:id="@+id/edt_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
       android:layout_margin="5dp"
-      android:hint="@string/to_do_create"
+      android:layout_marginRight="100dp"
+      android:layout_centerVertical="true"
+      android:hint="@string/to_do_hint_create"
       android:singleLine="true"/>
 
     <View android:layout_width="match_parent"
@@ -67,14 +66,14 @@
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/fab_add"
-    android:src="@drawable/ic_add_white_24dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginRight="20dp"
+    android:src="@drawable/ic_add_white_24dp"
     app:fabSize="normal"
     app:layout_anchorGravity="right"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:layout_anchor="@id/recycler_to_dos"
-    android:layout_marginRight="20dp"/>
-
+    />
 
 </android.support.design.widget.CoordinatorLayout>

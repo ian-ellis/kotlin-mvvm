@@ -1,4 +1,4 @@
-package ian_ellis.androidmvvm.utils
+package ian_ellis.kotlinmvvm.utils
 
 import android.os.Handler
 import android.os.Looper

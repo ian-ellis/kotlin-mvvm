@@ -1,15 +1,11 @@
 <resources>
-  <string name="app_name">AndroidMVVM</string>
+  <string name="app_name">Kotlin MVVM</string>
 
-  <string name="hello_world">Hello Kotlin!</string>
   <string name="action_settings">Settings</string>
 
   <string name="to_dos_title">To Dos</string>
+  <string name="to_do_hint_create">New To Do Title</string>
 
-  <string name="to_dos_btn_create">Create</string>
-  <string name="to_do_item_btn_delete">Delete</string>
-
-  <string name="to_do_item_btn_done">Done</string>
-  <string name="to_do_item_btn_undo">UnDo</string>
-  <string name="to_do_create">New To Do Title</string>
+  <string name="to_do_hint_title">Title</string>
+  <string name="to_do_hint_description">Description</string>
 </resources>

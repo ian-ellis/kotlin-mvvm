@@ -1,19 +1,30 @@
 <resources>
 
-  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="colorPrimary">@color/outware.blue</item>
-    <item name="colorAccent">@color/outware.lightblue</item>
-    
-    <item name="android:windowTranslucentNavigation">false</item>
+    <item name="colorAccent">@color/outware.darkblue</item>
+    <item name="colorPrimaryDark">@color/outware.blue</item>
+
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+
+    <item name="android:toolbarStyle">@style/AppTheme.Toolbar</item>
+
+    <!--<item name="android:statusBarColor">?colorPrimary</item>-->
     <item name="android:windowTranslucentStatus">true</item>
-    <item name="android:windowContentOverlay">@null</item>
-    <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="android:windowBackground">?colorPrimary</item>
+
   </style>
 
-  <color name="outware.blue">#167bba</color>
-  <color name="outware.lightblue">#B5F8FF</color>
-  <color name="outware.divider.grey">#D1D1D1</color>
+  <style name="AppTheme.Toolbar">
+    <item name="android:background">?colorPrimary</item>
+  </style>
 
+
+  <color name="outware.blue">#167bba</color>
+  <color name="outware.darkblue">#355970</color>
+  <color name="outware.divider.grey">#D1D1D1</color>
+  <color name="background_color">#ffffff</color>
 
 
 
