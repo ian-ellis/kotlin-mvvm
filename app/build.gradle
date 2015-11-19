@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.databinding'
+//apply plugin: 'com.android.databinding'
 apply plugin: 'kotlin-android'
 
 task wrapper(type: Wrapper) {
@@ -25,6 +25,9 @@ android {
   }
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
+  }
+  dataBinding {
+    enabled = true
   }
 }
 

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
   <data>
     <variable name="toDo" type="ian_ellis.kotlinmvvm.domain.UiToDoListItem" />
+    <variable name="handler" type="ian_ellis.kotlinmvvm.presentation.handlers.SelectedHandler" />
+    <variable name="clickHandler" type="ian_ellis.kotlinmvvm.presentation.handlers.ClickHandler" />
   </data>
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    app:selected="@{handler.selected}"
     android:background="?android:attr/selectableItemBackground">
     <TextView
       android:id="@+id/text_to_do_item_name"

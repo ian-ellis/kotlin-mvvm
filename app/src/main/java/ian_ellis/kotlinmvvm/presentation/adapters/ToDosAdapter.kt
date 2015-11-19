@@ -9,8 +9,9 @@ import ian_ellis.kotlinmvvm.R
 import ian_ellis.kotlinmvvm.databinding.ViewToDoItemBinding
 import ian_ellis.kotlinmvvm.domain.UiToDoListItem
 import ian_ellis.kotlinmvvm.presentation.ToDoSortedList
+import ian_ellis.kotlinmvvm.presentation.handlers.ClickHandler
+import ian_ellis.kotlinmvvm.presentation.handlers.SelectedHandler
 import org.jetbrains.anko.layoutInflater
-import org.jetbrains.anko.onClick
 
 public class ToDosAdapter(val context:Context) : RecyclerView.Adapter<ToDosAdapter.ViewHolder>() {
 
@@ -40,16 +41,16 @@ public class ToDosAdapter(val context:Context) : RecyclerView.Adapter<ToDosAdapt
 
     public val binding: ViewToDoItemBinding
 
-    constructor(item: View) : super(item) {
-      binding = DataBindingUtil.bind(item)
-      item.onClick{
-        editHandler?.invoke(binding.toDo)
-      }
+    constructor(view: View) : super(view) {
+      binding = DataBindingUtil.bind(view)
+
     }
 
     public fun bind(item: UiToDoListItem) {
       binding.toDo = item
-
+//      binding.handler = SelectedHandler(item,editHandler)
+      binding.handler = SelectedHandler()
+//      binding.clickHandler = ClickHandler()
     }
   }
 }
