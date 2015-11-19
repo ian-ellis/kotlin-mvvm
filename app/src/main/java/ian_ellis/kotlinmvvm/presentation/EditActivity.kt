@@ -10,6 +10,7 @@ import com.jakewharton.rxbinding.widget.RxTextView
 import ian_ellis.kotlinmvvm.R
 import ian_ellis.kotlinmvvm.databinding.ActivityEditToDoBinding
 import ian_ellis.kotlinmvvm.domain.EditViewModel
+import ian_ellis.kotlinmvvm.presentation.handlers.EditHandler
 import ian_ellis.kotlinmvvm.utils.RxBinderUtil
 import rx.Observable
 import rx.Subscription
@@ -26,10 +27,10 @@ class EditActivity : AppCompatActivity() {
   protected var id: Long = 0
 
 
-  protected lateinit var toolbar: Toolbar
-  protected lateinit var nameText: EditText
-  protected lateinit var descriptionText: EditText
-  protected lateinit var updateObservable: Observable<Pair<String,String>>
+//  protected lateinit var toolbar: Toolbar
+//  protected lateinit var nameText: EditText
+//  protected lateinit var descriptionText: EditText
+//  protected lateinit var updateObservable: Observable<Pair<String,String>>
   protected lateinit var binding: ActivityEditToDoBinding
 
   protected var updateSubscription: Subscription? = null
@@ -39,23 +40,24 @@ class EditActivity : AppCompatActivity() {
 
 
     binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_to_do)
+    binding.handler = EditHandler()
+
     id = intent.extras?.getLong(ID) ?: throw Error("No Id Passed")
 
-    toolbar = findViewById(R.id.toolbar) as Toolbar
-    nameText = findViewById(R.id.edt_to_do_name) as EditText
-    descriptionText = findViewById(R.id.edt_to_do_description) as EditText
-
+    val toolbar = findViewById(R.id.toolbar) as Toolbar
+//    nameText = findViewById(R.id.edt_to_do_name) as EditText
+//    descriptionText = findViewById(R.id.edt_to_do_description) as EditText
     setSupportActionBar(toolbar)
 
     supportActionBar.setDisplayHomeAsUpEnabled(true)
     toolbar.setNavigationOnClickListener { finish() }
 
-    updateObservable = Observable.combineLatest(
-      RxTextView.textChanges(nameText),
-      RxTextView.textChanges(descriptionText),{name,description ->
-        Pair(name.toString(),description.toString())
-      }
-    )
+//    updateObservable = Observable.combineLatest(
+//      RxTextView.textChanges(nameText),
+//      RxTextView.textChanges(descriptionText),{name,description ->
+//        Pair(name.toString(),description.toString())
+//      }
+//    )
 
   }
 
@@ -63,7 +65,8 @@ class EditActivity : AppCompatActivity() {
     super.onResume()
     viewModel.go(id)
     binder.bindProperty(viewModel.getToDo(), {toDo->
-      binding.setToDo(toDo)
+      binding.toDo = toDo
+
 //      updateSubscription?.unsubscribe()
 
 //      toolbar.title = "Edit: ${toDo.name}"

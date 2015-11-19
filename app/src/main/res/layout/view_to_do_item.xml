@@ -4,7 +4,6 @@
   <data>
     <variable name="toDo" type="ian_ellis.kotlinmvvm.domain.UiToDoListItem" />
     <variable name="handler" type="ian_ellis.kotlinmvvm.presentation.handlers.SelectedHandler" />
-    <variable name="clickHandler" type="ian_ellis.kotlinmvvm.presentation.handlers.ClickHandler" />
   </data>
   <RelativeLayout
     android:layout_width="match_parent"
