@@ -18,7 +18,7 @@ class EditViewModel(context: Context) {
     return behavior.asObservable()
       .map {
         UiToDoEdit(it.id, it.name, it.description)
-      }
+      }.distinctUntilChanged { it.name + it.description }
   }
 
   public fun update(id: Long, name:String, description:String) {

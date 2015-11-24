@@ -6,26 +6,33 @@ import android.view.View;
 
 public class SelectedHandler<T> {
 
-
-
   @BindingAdapter({"app:selected"})
   public static void onClick(View v,View.OnClickListener listener){
     v.setOnClickListener(listener);
   }
 
-  private T item;
-  private SelectedListener listener;
 
-  public SelectedHandler(T item, SelectedListener<T> listener){
+  private T item;
+  private SelectedListener selectedListener;
+  private SelectedListener actionListener;
+
+  public SelectedHandler(T item, SelectedListener<T> selectedListener, SelectedListener<T> actionListener){
     this.item = item;
-    this.listener = listener;
+    this.selectedListener = selectedListener;
+    this.actionListener = actionListener;
   }
 
   public void selected(View v){
-    listener.selected(item);
+    selectedListener.selected(item, v);
+  }
+
+  public void action(View v){
+    actionListener.selected(item, v);
   }
 
   public interface SelectedListener<T> {
-    void selected(@NonNull T item);
+    void selected(@NonNull T item, @NonNull View v);
   }
+
+
 }

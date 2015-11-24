@@ -17,9 +17,19 @@
       android:layout_height="wrap_content"
       android:layout_alignParentLeft="true"
       android:layout_centerVertical="true"
+      android:layout_toStartOf="@+id/btn_more"
       android:background="@{toDo.done?@drawable/strikethrough : null}"
       android:textAppearance="@style/TextAppearance.AppCompat.Title"
       android:textColor="@color/abc_primary_text_material_light"
-      android:text="@{toDo.name}"/>
+      android:text="@{toDo.name}"
+      />
+    <ImageButton android:id="@id/btn_more"
+      android:tint="@color/outware.divider.grey"
+      android:src="@drawable/ic_more_vert_white_24dp"
+      android:background="@android:color/transparent"
+      android:layout_alignParentEnd="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:selected="@{handler.action}" />
   </RelativeLayout>
 </layout>

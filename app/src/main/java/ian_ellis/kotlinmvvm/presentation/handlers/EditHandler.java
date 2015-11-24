@@ -1,38 +1,33 @@
 package ian_ellis.kotlinmvvm.presentation.handlers;
 
 import android.databinding.BindingAdapter;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class EditHandler {
+  public TextWatcher nameChanged;
+  public TextWatcher descriptionChanged;
 
-//  @BindingAdapter("app:bindEditText")
-//  public static void bindEditText(EditText editText, CharSequence value) {
-//    if (!editText.getText().toString().equals(value.toString())) {
-//      editText.setText(value);
-//    }
-//  }
+  public EditHandler(TextWatcher nameWatcher, TextWatcher descriptionWatcher) {
+    nameChanged = nameWatcher;
+    descriptionChanged = descriptionWatcher;
+  }
 
-  @BindingAdapter("app:bindEditText")
+  @BindingAdapter("app:onTextChanged")
   public static void bindEditText(EditText editText, TextWatcher listener) {
     editText.addTextChangedListener(listener);
   }
 
-  public TextWatcher nameChanged = new TextWatcher() {
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-      String tmp = "";
+  @BindingAdapter("app:editText")
+  public static void bindEditText(EditText editText, String text) {
+    String currentText = editText.getText().toString();
+    if((!editText.isFocused() || currentText.equals("")) && text != null && !currentText.equals(text)) {
+      editText.setText(text, TextView.BufferType.EDITABLE);
+      editText.setSelection(text.length());
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-      String tmp = "";
-    }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-      String tmp = "";
-    }
-  };
+  }
+
 }

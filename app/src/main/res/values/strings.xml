@@ -8,4 +8,8 @@
 
   <string name="to_do_hint_title">Title</string>
   <string name="to_do_hint_description">Description</string>
+
+  <string name="menu_actions_undo">Undo</string>
+  <string name="menu_actions_done">Done</string>
+  <string name="menu_actions_delete">Delete</string>
 </resources>

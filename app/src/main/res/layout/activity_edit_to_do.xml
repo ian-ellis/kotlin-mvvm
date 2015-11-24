@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
   <data>
     <variable name="toDo" type="ian_ellis.kotlinmvvm.domain.UiToDoEdit" />
     <variable name="handler" type="ian_ellis.kotlinmvvm.presentation.handlers.EditHandler" />
@@ -55,8 +54,8 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="@string/to_do_hint_title"
-            app:bindEditText="@{handler.nameChanged}"
-            android:text="@{toDo.name}"
+            app:editText="@{toDo.name}"
+            app:onTextChanged="@{handler.nameChanged}"
             />
         </android.support.design.widget.TextInputLayout>
 
@@ -75,7 +74,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/to_do_hint_description"
             android:singleLine="false"
-            android:text="@{toDo.description}"
+            app:editText="@{toDo.description}"
+            app:onTextChanged="@{handler.descriptionChanged}"
             />
         </android.support.design.widget.TextInputLayout>
       </LinearLayout>

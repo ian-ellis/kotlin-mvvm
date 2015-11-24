@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/menu_action_delete"
+    android:icon="@drawable/ic_delete_white_24dp"
+    android:title="@string/menu_actions_delete"
+    />
+  <item android:id="@+id/menu_action_undo"
+    android:icon="@drawable/ic_undo_white_24dp"
+    android:title="@string/menu_actions_undo"
+    />
+</menu>
