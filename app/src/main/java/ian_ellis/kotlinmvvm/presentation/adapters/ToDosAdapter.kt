@@ -48,8 +48,22 @@ public class ToDosAdapter(val context: Context) : RecyclerView.Adapter<ToDosAdap
   inner class ViewHolder : RecyclerView.ViewHolder {
 
     public val binding: ViewToDoItemBinding
-    public val selected = SelectedListener<UiToDoListItem> { item, view -> editHandler?.invoke(item) }
-    public val action = SelectedListener<UiToDoListItem> { item, view ->
+
+    constructor(view: View) : super(view) {
+      binding = DataBindingUtil.bind(view)
+
+    }
+
+    public fun bind(item: UiToDoListItem) {
+      binding.toDo = item
+      binding.handler = SelectedHandler({
+        editHandler?.invoke(item)
+      }, {
+        showPopUp(item,it)
+      })
+    }
+
+    protected fun showPopUp(item:UiToDoListItem,view:View) {
       //open popup menu
       val popupMenu = PopupMenu(context, view);
       popupMenu.setOnMenuItemClickListener({ menuItem ->
@@ -59,6 +73,7 @@ public class ToDosAdapter(val context: Context) : RecyclerView.Adapter<ToDosAdap
         }
         true
       });
+
       val menuId = if (item.done) {
         R.menu.menu_item_actions_done
       } else {
@@ -70,16 +85,6 @@ public class ToDosAdapter(val context: Context) : RecyclerView.Adapter<ToDosAdap
       popupMenu.tintIcons(context, R.color.outware_blue)
 
       popupMenu.show();
-    }
-
-    constructor(view: View) : super(view) {
-      binding = DataBindingUtil.bind(view)
-
-    }
-
-    public fun bind(item: UiToDoListItem) {
-      binding.toDo = item
-      binding.handler = SelectedHandler<UiToDoListItem>(item, selected, action)
     }
   }
 }
