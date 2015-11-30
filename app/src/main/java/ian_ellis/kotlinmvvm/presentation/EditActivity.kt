@@ -33,22 +33,6 @@ class EditActivity : AppCompatActivity() {
   protected var id: Long = 0
 
 
-  protected val nameBehavior: BehaviorSubject<String> = BehaviorSubject.create()
-  protected val descriptionBehavior: BehaviorSubject<String> = BehaviorSubject.create()
-
-  protected var updateSubscription: Subscription? = null
-  protected val updateObservable: Observable<Pair<String,String>> = Observable.combineLatest(
-    nameBehavior,
-    descriptionBehavior,
-    { name, description ->
-      Pair(name,description)
-    }
-  ).debounce(300,TimeUnit.MILLISECONDS)
-  .doOnNext{
-    val (name,description)  = it
-    viewModel.update(id, name, description);
-  }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -65,28 +49,9 @@ class EditActivity : AppCompatActivity() {
 
   }
 
-  protected val nameChanged = object : TextWatcher {
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-      nameBehavior.onNext(s.toString())
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-    override fun afterTextChanged(s: Editable?) {}
-  }
-
-  protected val descriptionChanged = object : TextWatcher {
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-      descriptionBehavior.onNext(s.toString())
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-    override fun afterTextChanged(s: Editable?) {}
-  }
-
   override fun onResume() {
     super.onResume()
     viewModel.go(id)
-    updateSubscription = updateObservable.subscribe()
     binder.bindProperty(viewModel.getToDo(), { toDo ->
       binding.toDo = toDo
     })
@@ -95,9 +60,24 @@ class EditActivity : AppCompatActivity() {
   override fun onPause() {
     super.onPause()
     binder.clear()
-    updateSubscription?.unsubscribe()
   }
 
+  protected val nameChanged = object : TextWatcher {
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+      viewModel.nameChanged(s.toString())
+    }
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+    override fun afterTextChanged(s: Editable?) {}
+  }
+
+  protected val descriptionChanged = object : TextWatcher {
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+      viewModel.descriptionChanged(s.toString())
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+    override fun afterTextChanged(s: Editable?) {}
+  }
 
 }
 

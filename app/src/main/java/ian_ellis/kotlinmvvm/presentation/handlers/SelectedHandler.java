@@ -11,7 +11,6 @@ public class SelectedHandler<T> {
     v.setOnClickListener(listener);
   }
 
-
   private T item;
   private SelectedListener selectedListener;
   private SelectedListener actionListener;

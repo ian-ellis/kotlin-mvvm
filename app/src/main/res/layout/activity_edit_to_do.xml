@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:kbind="https://github.com/ian-ellis/kotlin-binding">
   <data>
     <variable name="toDo" type="ian_ellis.kotlinmvvm.domain.UiToDoEdit" />
     <variable name="handler" type="ian_ellis.kotlinmvvm.presentation.handlers.EditHandler" />
   </data>
   <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -54,8 +55,8 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="@string/to_do_hint_title"
-            app:editText="@{toDo.name}"
-            app:onTextChanged="@{handler.nameChanged}"
+            kbind:editText="@{toDo.name}"
+            kbind:onTextChanged="@{handler.nameChanged}"
             />
         </android.support.design.widget.TextInputLayout>
 
@@ -74,8 +75,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/to_do_hint_description"
             android:singleLine="false"
-            app:editText="@{toDo.description}"
-            app:onTextChanged="@{handler.descriptionChanged}"
+            kbind:editText="@{toDo.description}"
+            kbind:onTextChanged="@{handler.descriptionChanged}"
             />
         </android.support.design.widget.TextInputLayout>
       </LinearLayout>

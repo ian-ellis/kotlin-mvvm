@@ -1,86 +1,60 @@
 package ian_ellis.kotlinmvvm.domain
 
 import android.content.Context
+import ian_ellis.kotlinmvvm.R
 import ian_ellis.kotlinmvvm.data.store.ToDoSQLHelper
 import ian_ellis.kotlinmvvm.data.vo.ToDo
 import rx.Observable
 import rx.Subscription
 import rx.subjects.BehaviorSubject
-import java.util.*
 
 public class ToDosViewModel(val context: Context) {
 
   private val db: ToDoSQLHelper = ToDoSQLHelper(context)
-  private val behavior: BehaviorSubject<List<ToDo>>  = BehaviorSubject.create()
+  private val toDosBehavior: BehaviorSubject<List<ToDo>>  = BehaviorSubject.create(listOf())
+  private val createTitleBehavior: BehaviorSubject<String>  = BehaviorSubject.create("")
+  private val createButtonBehavior: BehaviorSubject<Unit>  = BehaviorSubject.create()
+
   private var refreshSubscription: Subscription? = null
-
-  public fun getToDos(): Observable<UiToDoListUpdate> {
-
-    return behavior.scan(Pair<List<ToDo>,List<ToDo>>(listOf(),listOf()),
-      {previous, next ->
-        Pair(previous.second,next)
-      }
-    ).map{
-      val previous = it.first
-      val next = it.second
-
-      val changed: ArrayList<Int> = arrayListOf()
-      val added: ArrayList<Int> = arrayListOf()
-      val deleted: ArrayList<Int> = arrayListOf()
-
-      if(previous.size > 0) {
-        val itemsById = next.groupBy { it.id }
-        val dataById = previous.groupBy { it.id }
-
-        previous.forEachIndexed { i, it ->
-          if (!itemsById.contains(it.id)) {
-            deleted.add(i)
-          }
-        }
-
-        next.forEachIndexed { i, it ->
-          val oldItem: List<ToDo>? = dataById[it.id]
-          if (oldItem != null && oldItem.size > 0) {
-            if (oldItem[0].done != it.done || oldItem[0].name != it.name) {
-              changed.add(i)
-            }
-          } else {
-            added.add(i)
-          }
-        }
-      }
-
-      val items = next.map {
-        UiToDoListItem(id = it.id,
-          name = it.name,
-          done = it.done)
-      }
-
-      UiToDoListUpdate(items,changed.toList(),added.toList(),deleted.toList())
-
-    }.asObservable()
-
-  }
+  private var createSubscription: Subscription? = null
+  private val title = context.getString(R.string.to_dos_title)
 
   public fun go() {
+    createSubscription = createButtonBehavior.flatMap {
+      createTitleBehavior.first()
+    }.filter {
+      it != ""
+    }.flatMap {
+      db.add(ToDo(it))
+    }.doOnNext{
+      createTitleBehavior.onNext("")
+    }.subscribe {
+      refresh()
+    }
+
     refresh()
   }
 
   public fun stop(){
+    createSubscription?.unsubscribe()
     refreshSubscription?.unsubscribe()
   }
 
-  protected fun refresh(){
-    refreshSubscription?.unsubscribe()
-    refreshSubscription = db.getAll().subscribe {
-      behavior.onNext(it.reversed())
-    }
+  public fun getToDos(): Observable<UiToDoListUpdate> {
+    return Observable.combineLatest(toDosBehavior,createTitleBehavior,{ toDos, createTitle ->
+      val items = toDos.map {
+        UiToDoListItem(it.id, it.name, it.done)
+      }
+      UiToDoListUpdate(items,title,createTitle)
+    })
   }
 
-  public fun add(title:String){
-    db.add(ToDo(title)).subscribe {
-      refresh()
-    }
+  public fun addClicked(){
+    createButtonBehavior.onNext(Unit)
+  }
+
+  public fun createTitleChanged(title:String) {
+    createTitleBehavior.onNext(title)
   }
 
   public fun done(toDo:UiToDoListItem,done:Boolean){
@@ -93,6 +67,12 @@ public class ToDosViewModel(val context: Context) {
     db.delete(toDo.id).subscribe {
       refresh()
     }
+  }
 
+  protected fun refresh(){
+    refreshSubscription?.unsubscribe()
+    refreshSubscription = db.getAll().subscribe {
+      toDosBehavior.onNext(it)
+    }
   }
 }

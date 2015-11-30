@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  >
   <data>
     <variable name="toDo" type="ian_ellis.kotlinmvvm.domain.UiToDoListItem" />
     <variable name="handler" type="ian_ellis.kotlinmvvm.presentation.handlers.SelectedHandler" />
   </data>
   <RelativeLayout
+    xmlns:kbind="https://github.com/ian-ellis/kotlin-binding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
     app:selected="@{handler.selected}"
     android:background="?android:attr/selectableItemBackground">
+
     <TextView
       android:id="@+id/text_to_do_item_name"
       android:layout_width="match_parent"
@@ -23,6 +26,7 @@
       android:textColor="@color/abc_primary_text_material_light"
       android:text="@{toDo.name}"
       />
+
     <ImageButton android:id="@id/btn_more"
       android:tint="@color/outware.divider.grey"
       android:src="@drawable/ic_more_vert_white_24dp"
@@ -31,5 +35,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:selected="@{handler.action}" />
+
   </RelativeLayout>
+
 </layout>

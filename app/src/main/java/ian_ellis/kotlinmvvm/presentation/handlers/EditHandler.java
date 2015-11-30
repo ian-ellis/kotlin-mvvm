@@ -14,20 +14,6 @@ public class EditHandler {
     descriptionChanged = descriptionWatcher;
   }
 
-  @BindingAdapter("app:onTextChanged")
-  public static void bindEditText(EditText editText, TextWatcher listener) {
-    editText.addTextChangedListener(listener);
-  }
 
-  @BindingAdapter("app:editText")
-  public static void bindEditText(EditText editText, String text) {
-    String currentText = editText.getText().toString();
-    if((!editText.isFocused() || currentText.equals("")) && text != null && !currentText.equals(text)) {
-      editText.setText(text, TextView.BufferType.EDITABLE);
-      editText.setSelection(text.length());
-    }
-
-
-  }
 
 }
