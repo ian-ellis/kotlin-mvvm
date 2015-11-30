@@ -28,3 +28,5 @@ pmd.xml
 # Eclipse
 .metadata
 .settings
+
+*.hprof
